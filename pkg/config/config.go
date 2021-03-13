@@ -8,6 +8,10 @@ import (
 
 var GlobalProviderSet = wire.NewSet(New)
 
+func init() {
+	viper.AutomaticEnv() // 绑定环境变量
+}
+
 func New(confPath string) (v *viper.Viper, err error) {
 	v = viper.New()
 	v.AddConfigPath(".")

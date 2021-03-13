@@ -23,6 +23,18 @@ func NewRedisOptions(v *viper.Viper) (o *RedisOptions, err error) {
 		return nil, errors.WithStack(err)
 	}
 
+	if v, ok := viper.Get("REDIS_ADDR").(string); ok {
+		o.Address = v
+	}
+
+	if v, ok := viper.Get("REDIS_DB").(int); ok {
+		o.DB = v
+	}
+
+	if v, ok := viper.Get("REDIS_PASS").(string); ok {
+		o.Passwrod = v
+	}
+
 	return o, err
 }
 
