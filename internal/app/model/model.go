@@ -13,28 +13,22 @@ type Repostiory struct {
 	Redis *redis.Client
 }
 
-func (db *Repostiory) Del(ctx context.Context, s string) (err error) {
-	var cursor uint64
-	var n int
-	var totalKeys []string
-	for {
-		var keys []string
-		var err error
-		keys, cursor, err = db.Redis.Scan(ctx, cursor, s+"*", 5000).Result()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		n += len(keys)
-		totalKeys = append(totalKeys, keys...)
-		if cursor == 0 {
-			break
-		}
+func (db *Repostiory) DelKey(ctx context.Context, key string) (err error) {
+	if _, err = db.Redis.Del(ctx, key).Result(); err != nil {
+		return err
+	}
+	return
+}
+
+func (db *Repostiory) CheckAccountExist(ctx context.Context, uid string) (err error) {
+	key := "user:" + uid
+	exist, err := db.Redis.Exists(ctx, key).Result()
+	if err != nil {
+		return err
 	}
 
-	if len(totalKeys) > 0 {
-		if _, err := db.Redis.Del(ctx, totalKeys...).Result(); err != nil {
-			return errors.WithStack(err)
-		}
+	if exist == 0 {
+		return errors.New("用户不存在")
 	}
 
 	return

@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
 var ProviderSet = wire.NewSet(NewApp)
@@ -51,7 +50,6 @@ func (a *App) AwaitSignal() {
 		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
 			a.close()
 			log.Println("app exit")
-			time.Sleep(time.Second)
 			return
 		case syscall.SIGHUP:
 			//dosomething

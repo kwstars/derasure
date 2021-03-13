@@ -18,12 +18,9 @@ func CreateInitControllersFn(f *Controller) transporthttp.InitControllers {
 			c.HTML(http.StatusOK, "index.tmpl", gin.H{})
 		})
 
-		handle := r.Group("/del")
+		handle := r.Group("/")
 		{
-			handle.GET("/eliminate", f.Service.DelEliminate)
-			handle.GET("/banquet", f.Service.DelBanquet)
-			handle.GET("/fishing", f.Service.DelFishing)
-			handle.GET("/kite", f.Service.DelKite)
+			handle.POST("", f.Service.Del)
 		}
 	}
 }
