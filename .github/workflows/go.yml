@@ -30,7 +30,7 @@ jobs:
         with:
           push: true
           file: build/Dockerfile
-          tags: ${{ app.USER_NAME }}/${{ app.NAME }}:latest
+          tags: kwstars/derasure:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
