@@ -16,4 +16,4 @@ build-in-docker:
 	done
 
 build-docker-images: wire
-	 docker build -f build/Dockerfile -t derasure .
+	 docker build -f build/Dockerfile -t kwstars/derasure .
