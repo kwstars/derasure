@@ -48,7 +48,7 @@ func New(o *LogOptions) (logger *zap.Logger, cf func(), err error) {
 	level := zap.NewAtomicLevel()
 	if err = level.UnmarshalText([]byte(o.Level)); err != nil {
 		return
-	},
+	}
 
 	fw := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   o.StdoutFile.Path,
