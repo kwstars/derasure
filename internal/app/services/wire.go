@@ -3,5 +3,10 @@ package services
 import "github.com/google/wire"
 
 var ProviderSet = wire.NewSet(
-	Set,
+	DelServiceSet,
+	EliminateSet,
+	BanquetSet,
+	FishingSet,
+	KiteSet,
+	LimitedGiftSet,
 )

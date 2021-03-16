@@ -9,11 +9,11 @@ import (
 	"github.com/google/wire"
 	"github.com/kwstars/derasure/internal/app"
 	"github.com/kwstars/derasure/internal/app/controllers"
-	"github.com/kwstars/derasure/internal/app/log"
 	"github.com/kwstars/derasure/internal/app/model"
 	"github.com/kwstars/derasure/internal/app/services"
 	"github.com/kwstars/derasure/pkg/config"
 	"github.com/kwstars/derasure/pkg/db"
+	"github.com/kwstars/derasure/pkg/log"
 	"github.com/kwstars/derasure/pkg/transports/http"
 )
 
@@ -24,34 +24,54 @@ func CreateApp(confPath string) (*app.App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	redisOptions, err := db.NewRedisOptions(viper)
+	logOptions, err := log.NewLogOptions(viper)
 	if err != nil {
 		return nil, nil, err
 	}
-	client, cleanup, err := db.New(redisOptions)
+	logger, cleanup, err := log.New(logOptions)
 	if err != nil {
+		return nil, nil, err
+	}
+	redisOptions, err := db.NewRedisOptions(viper)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	client, cleanup2, err := db.New(redisOptions)
+	if err != nil {
+		cleanup()
 		return nil, nil, err
 	}
 	repostiory := &model.Repostiory{
 		Redis: client,
 	}
-	servicesServices := services.Services{
+	eliminate := &services.Eliminate{
 		Repostiory: repostiory,
+	}
+	banquet := &services.Banquet{
+		Repostiory: repostiory,
+	}
+	fishing := &services.Fishing{
+		Repostiory: repostiory,
+	}
+	kite := &services.Kite{
+		Repostiory: repostiory,
+	}
+	limitedGift := &services.LimitedGift{
+		Repostiory: repostiory,
+	}
+	servicesServices := services.Services{
+		Logger:      logger,
+		Eliminate:   eliminate,
+		Banquet:     banquet,
+		Fishing:     fishing,
+		Kite:        kite,
+		LimitedGift: limitedGift,
 	}
 	controller := &controllers.Controller{
 		Service: servicesServices,
 	}
 	initControllers := controllers.CreateInitControllersFn(controller)
-	logOptions, err := log.NewLogOptions(viper)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
-	logger, cleanup2, err := log.New(logOptions)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
 	engine := http.NewRouter(initControllers, logger)
 	server, err := http.New(engine)
 	if err != nil {
