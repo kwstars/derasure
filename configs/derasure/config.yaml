@@ -1,4 +1,17 @@
+derasure:
+  mode: debug
+
 redis:
   address: "localhost:6379"
   db: 1
   password: ""
+
+log:
+  level: "debug"
+  stdout_file:
+    open: false
+    path: ./derasure.log
+    max_size: 500
+    max_backups: 3
+    max_age: 3
+  stdout_console: true

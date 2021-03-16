@@ -9,6 +9,7 @@ import (
 	"github.com/google/wire"
 	"github.com/kwstars/derasure/internal/app"
 	"github.com/kwstars/derasure/internal/app/controllers"
+	"github.com/kwstars/derasure/internal/app/log"
 	"github.com/kwstars/derasure/internal/app/model"
 	"github.com/kwstars/derasure/internal/app/services"
 	"github.com/kwstars/derasure/pkg/config"
@@ -41,22 +42,35 @@ func CreateApp(confPath string) (*app.App, func(), error) {
 		Service: servicesServices,
 	}
 	initControllers := controllers.CreateInitControllersFn(controller)
-	engine := http.NewRouter(initControllers)
-	server, err := http.New(engine)
+	logOptions, err := log.NewLogOptions(viper)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	appApp, err := app.NewApp(server)
+	logger, cleanup2, err := log.New(logOptions)
 	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	engine := http.NewRouter(initControllers, logger)
+	server, err := http.New(engine)
+	if err != nil {
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	appApp, err := app.NewApp(server, logger)
+	if err != nil {
+		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
 	return appApp, func() {
+		cleanup2()
 		cleanup()
 	}, nil
 }
 
 // wire.go:
 
-var providerSet = wire.NewSet(config.GlobalProviderSet, db.ProviderSet, model.ProviderSet, services.ProviderSet, controllers.ProviderSet, http.ProviderSet, app.ProviderSet)
+var providerSet = wire.NewSet(config.GlobalProviderSet, log.ProviderSet, db.ProviderSet, model.ProviderSet, services.ProviderSet, controllers.ProviderSet, http.ProviderSet, app.ProviderSet)

@@ -6,6 +6,7 @@ import (
 	"github.com/google/wire"
 	"github.com/kwstars/derasure/internal/app"
 	"github.com/kwstars/derasure/internal/app/controllers"
+	"github.com/kwstars/derasure/internal/app/log"
 	"github.com/kwstars/derasure/internal/app/model"
 	"github.com/kwstars/derasure/internal/app/services"
 	globalconfig "github.com/kwstars/derasure/pkg/config"
@@ -15,6 +16,7 @@ import (
 
 var providerSet = wire.NewSet(
 	globalconfig.GlobalProviderSet,
+	log.ProviderSet,
 	db.ProviderSet,
 	model.ProviderSet,
 	services.ProviderSet,

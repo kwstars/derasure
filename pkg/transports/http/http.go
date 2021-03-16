@@ -2,10 +2,12 @@ package http
 
 import (
 	"context"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app/middlewares"
+	"github.com/kwstars/derasure/pkg/transports/http/middlewares"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 	"net/http"
 	"time"
 )
@@ -19,7 +21,7 @@ type Server struct {
 	httpServer http.Server
 }
 
-func NewRouter(initRouter InitControllers) *gin.Engine {
+func NewRouter(initRouter InitControllers, lg *zap.Logger) *gin.Engine {
 	r := gin.New()
 
 	// 初始化静态文件目录
@@ -33,6 +35,10 @@ func NewRouter(initRouter InitControllers) *gin.Engine {
 
 	// panic之后自动恢复
 	r.Use(gin.Recovery())
+
+	// 日志
+	r.Use(ginzap.Ginzap(lg, time.RFC3339, true))
+	r.Use(ginzap.RecoveryWithZap(lg, true))
 
 	// 初始化路由
 	initRouter(r)

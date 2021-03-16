@@ -4,6 +4,7 @@ import (
 	"github.com/google/wire"
 	"github.com/kwstars/derasure/pkg/transports/http"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 	"log"
 	"os"
 	"os/signal"
@@ -16,11 +17,13 @@ type App struct {
 	name       string
 	httpServer *http.Server
 	close      func()
+	logger     *zap.Logger
 }
 
-func NewApp(h *http.Server) (app *App, err error) {
+func NewApp(h *http.Server, logger *zap.Logger) (app *App, err error) {
 	app = &App{
 		httpServer: h,
+		logger:     logger,
 		close: func() {
 			if err := h.Stop(); err != nil {
 				log.Println("httpSrv.Shutdown error(%v)", err)
