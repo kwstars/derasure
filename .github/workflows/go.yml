@@ -30,9 +30,6 @@ jobs:
       - name: Test
           run:docker-compose -f deployments/docker-compose.test.yml up --exit-code-from testing
 
-  #    - name: Test
-  #      run: go test -v ./...
-
   build:
     needs: [test]
     runs-on: ubuntu-latest
