@@ -11,7 +11,7 @@ var EliminateSet = wire.NewSet(wire.Struct(new(Eliminate), "*"))
 var _ IDelData = (*Eliminate)(nil)
 
 type Eliminate struct {
-	Repostiory *repositories.Repostiory
+	Repostiory *repositories.ErasureRepostiory
 }
 
 func (b *Eliminate) Execution(ctx context.Context, uid string) (err error) {

@@ -11,7 +11,7 @@ var BanquetSet = wire.NewSet(wire.Struct(new(Banquet), "*"))
 var _ IDelData = (*Banquet)(nil)
 
 type Banquet struct {
-	Repostiory *repositories.Repostiory
+	Repostiory *repositories.ErasureRepostiory
 }
 
 func (b *Banquet) Execution(ctx context.Context, uid string) (err error) {

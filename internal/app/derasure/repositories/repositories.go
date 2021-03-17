@@ -7,13 +7,20 @@ import (
 	"github.com/pkg/errors"
 )
 
-var Set = wire.NewSet(wire.Struct(new(Repostiory), "*"))
+var ErasureSet = wire.NewSet(
+	wire.NewSet(wire.Struct(new(ErasureRepostiory), "*")),
+	wire.Bind(new(IErasureRepostiory), new(*ErasureRepostiory)),
+)
 
-type Repostiory struct {
+type IErasureRepostiory interface {
+	DelKey(ctx context.Context, key string) (err error)
+}
+
+type ErasureRepostiory struct {
 	Redis *redis.Client
 }
 
-func (db *Repostiory) DelKey(ctx context.Context, key string) (err error) {
+func (db *ErasureRepostiory) DelKey(ctx context.Context, key string) (err error) {
 	if _, err = db.Redis.Del(ctx, key).Result(); err != nil {
 		return errors.WithStack(err)
 	}

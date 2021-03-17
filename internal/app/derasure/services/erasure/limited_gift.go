@@ -11,7 +11,7 @@ var LimitedGiftSet = wire.NewSet(wire.Struct(new(LimitedGift), "*"))
 var _ IDelData = (*LimitedGift)(nil)
 
 type LimitedGift struct {
-	Repostiory *repositories.Repostiory
+	Repostiory *repositories.ErasureRepostiory
 }
 
 func (b *LimitedGift) Execution(ctx context.Context, uid string) (err error) {

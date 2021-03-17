@@ -42,23 +42,23 @@ func CreateApp(confPath string) (*derasure.App, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	repostiory := &repositories.Repostiory{
+	erasureRepostiory := &repositories.ErasureRepostiory{
 		Redis: client,
 	}
 	eliminate := &erasure.Eliminate{
-		Repostiory: repostiory,
+		Repostiory: erasureRepostiory,
 	}
 	banquet := &erasure.Banquet{
-		Repostiory: repostiory,
+		Repostiory: erasureRepostiory,
 	}
 	fishing := &erasure.Fishing{
-		Repostiory: repostiory,
+		Repostiory: erasureRepostiory,
 	}
 	kite := &erasure.Kite{
-		Repostiory: repostiory,
+		Repostiory: erasureRepostiory,
 	}
 	limitedGift := &erasure.LimitedGift{
-		Repostiory: repostiory,
+		Repostiory: erasureRepostiory,
 	}
 	erasureServices := erasure.ErasureServices{
 		Logger:      logger,

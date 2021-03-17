@@ -11,7 +11,7 @@ var FishingSet = wire.NewSet(wire.Struct(new(Fishing), "*"))
 var _ IDelData = (*Fishing)(nil)
 
 type Fishing struct {
-	Repostiory *repositories.Repostiory
+	Repostiory *repositories.ErasureRepostiory
 }
 
 func (b *Fishing) Execution(ctx context.Context, uid string) (err error) {

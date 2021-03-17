@@ -11,7 +11,7 @@ var KiteSet = wire.NewSet(wire.Struct(new(Kite), "*"))
 var _ IDelData = (*Kite)(nil)
 
 type Kite struct {
-	Repostiory *repositories.Repostiory
+	Repostiory *repositories.ErasureRepostiory
 }
 
 func (b *Kite) Execution(ctx context.Context, uid string) (err error) {
