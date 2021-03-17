@@ -12,7 +12,7 @@ wire:
 build-in-docker:
 	for app in $(apps) ;\
 	do \
-		CGO_ENABLED=0 go build -o dist/$$app ./cmd/$$app/; \
+		CGO_ENABLED=0 go build  -ldflags="-s -w" -o dist/$$app ./cmd/$$app/; \
 	done
 
 build-docker-images: wire
