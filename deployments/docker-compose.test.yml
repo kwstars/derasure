@@ -6,6 +6,9 @@ services:
     image: mysql:5.7
     ports:
       - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      TZ: "Asia/Shanghai"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "--protocol=tcp"]
       timeout: 20s
