@@ -4,8 +4,8 @@ services:
   mysql:
     container_name: mysql
     image: mysql:5.7
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "0.0.0.0:3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: mysql
       TZ: "Asia/Shanghai"
@@ -24,8 +24,14 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
   testing:
+    container_name: testing
     image: golang:1.15
     working_dir: /opt/myapp/
     volumes:
