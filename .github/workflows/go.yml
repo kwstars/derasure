@@ -10,8 +10,6 @@ on:
       - '.github/workflows/*yml'
   pull_request:
     branches: [ main ]
-#  schedule:
-#    - cron:  '13 3 * * *'
 
 jobs:
   test:
