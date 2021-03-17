@@ -5,9 +5,9 @@ on:
     branches: [ main ]
     tags:
       - '*'
-    paths-ignore:
-      - '**.md'
-      - '.github/workflows/*yml'
+#    paths-ignore:
+#      - '**.md'
+#      - '.github/workflows/*yml'
   pull_request:
     branches: [ main ]
 
