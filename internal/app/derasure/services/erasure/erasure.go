@@ -1,15 +1,20 @@
-package services
+package erasure
 
 import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/kwstars/derasure/pkg/retno"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
 )
 
-var DelServiceSet = wire.NewSet(wire.Struct(new(Services), "*"))
+type IDelData interface {
+	Execution(ctx context.Context, uid string) error
+}
+
+var DelServiceSet = wire.NewSet(wire.Struct(new(ErasureServices), "*"))
 
 const (
 	MINIGAME_ELIMINATE = iota + 1
@@ -19,7 +24,7 @@ const (
 	LIMITED_GIFT
 )
 
-type Services struct {
+type ErasureServices struct {
 	Logger      *zap.Logger
 	Eliminate   *Eliminate
 	Banquet     *Banquet
@@ -28,13 +33,13 @@ type Services struct {
 	LimitedGift *LimitedGift
 }
 
-func (s *Services) Del(c *gin.Context) {
+func (s *ErasureServices) Del(c *gin.Context) {
 	uid, ok1 := c.GetPostForm("uid")
 	tmpType, ok2 := c.GetPostForm("type")
 	if !ok1 || !ok2 {
 		s.Logger.Error("Incorrect request parameters", zap.String("uid", uid), zap.String("type", tmpType))
 		c.HTML(http.StatusBadRequest, "index.tmpl", gin.H{
-			"msg":  "请求参数不正确",
+			"msg":  retno.INVALID_DATA.String(),
 			"uid":  uid,
 			"type": tmpType,
 		})
@@ -55,7 +60,7 @@ func (s *Services) Del(c *gin.Context) {
 		err = s.LimitedGift.Execution(context.Background(), uid)
 	default:
 		s.Logger.Error("Incorrect request parameters", zap.String("uid", uid), zap.String("type", tmpType))
-		c.HTML(http.StatusInternalServerError, "index.tmpl", gin.H{"msg": "无效选项", "uid": uid, "type": tp})
+		c.HTML(http.StatusInternalServerError, "index.tmpl", gin.H{"msg": retno.INVALID_DATA.String(), "uid": uid, "type": tp})
 		return
 	}
 
@@ -68,7 +73,7 @@ func (s *Services) Del(c *gin.Context) {
 		})
 	} else {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"msg":  "执行成功",
+			"msg":  retno.OK,
 			"uid":  uid,
 			"type": tp,
 		})

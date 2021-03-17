@@ -2,13 +2,13 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/kwstars/derasure/internal/app/services"
+	"github.com/kwstars/derasure/internal/app/derasure/services/erasure"
 	transporthttp "github.com/kwstars/derasure/pkg/transports/http"
 	"net/http"
 )
 
 type Controller struct {
-	Service services.Services
+	Service erasure.ErasureServices
 }
 
 func CreateInitControllersFn(f *Controller) transporthttp.InitControllers {

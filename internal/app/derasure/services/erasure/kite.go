@@ -1,17 +1,17 @@
-package services
+package erasure
 
 import (
 	"context"
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app/model"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
 )
 
 var KiteSet = wire.NewSet(wire.Struct(new(Kite), "*"))
 
-var _ IDel = (*Kite)(nil)
+var _ IDelData = (*Kite)(nil)
 
 type Kite struct {
-	Repostiory *model.Repostiory
+	Repostiory *repositories.Repostiory
 }
 
 func (b *Kite) Execution(ctx context.Context, uid string) (err error) {

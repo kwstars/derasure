@@ -1,4 +1,4 @@
-package app
+package derasure
 
 import (
 	"github.com/google/wire"

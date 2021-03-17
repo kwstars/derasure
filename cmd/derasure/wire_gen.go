@@ -7,19 +7,19 @@ package main
 
 import (
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app"
-	"github.com/kwstars/derasure/internal/app/controllers"
-	"github.com/kwstars/derasure/internal/app/model"
-	"github.com/kwstars/derasure/internal/app/services"
+	"github.com/kwstars/derasure/internal/app/derasure"
+	"github.com/kwstars/derasure/internal/app/derasure/controllers"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
+	"github.com/kwstars/derasure/internal/app/derasure/services/erasure"
 	"github.com/kwstars/derasure/pkg/config"
-	"github.com/kwstars/derasure/pkg/db"
+	"github.com/kwstars/derasure/pkg/database"
 	"github.com/kwstars/derasure/pkg/log"
 	"github.com/kwstars/derasure/pkg/transports/http"
 )
 
 // Injectors from wire.go:
 
-func CreateApp(confPath string) (*app.App, func(), error) {
+func CreateApp(confPath string) (*derasure.App, func(), error) {
 	viper, err := config.New(confPath)
 	if err != nil {
 		return nil, nil, err
@@ -32,35 +32,35 @@ func CreateApp(confPath string) (*app.App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	redisOptions, err := db.NewRedisOptions(viper)
+	redisOptions, err := database.NewRedisOptions(viper)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	client, cleanup2, err := db.New(redisOptions)
+	client, cleanup2, err := database.New(redisOptions)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	repostiory := &model.Repostiory{
+	repostiory := &repositories.Repostiory{
 		Redis: client,
 	}
-	eliminate := &services.Eliminate{
+	eliminate := &erasure.Eliminate{
 		Repostiory: repostiory,
 	}
-	banquet := &services.Banquet{
+	banquet := &erasure.Banquet{
 		Repostiory: repostiory,
 	}
-	fishing := &services.Fishing{
+	fishing := &erasure.Fishing{
 		Repostiory: repostiory,
 	}
-	kite := &services.Kite{
+	kite := &erasure.Kite{
 		Repostiory: repostiory,
 	}
-	limitedGift := &services.LimitedGift{
+	limitedGift := &erasure.LimitedGift{
 		Repostiory: repostiory,
 	}
-	servicesServices := services.Services{
+	erasureServices := erasure.ErasureServices{
 		Logger:      logger,
 		Eliminate:   eliminate,
 		Banquet:     banquet,
@@ -69,7 +69,7 @@ func CreateApp(confPath string) (*app.App, func(), error) {
 		LimitedGift: limitedGift,
 	}
 	controller := &controllers.Controller{
-		Service: servicesServices,
+		Service: erasureServices,
 	}
 	initControllers := controllers.CreateInitControllersFn(controller)
 	engine := http.NewRouter(initControllers, logger)
@@ -79,13 +79,13 @@ func CreateApp(confPath string) (*app.App, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	appApp, err := app.NewApp(server, logger)
+	app, err := derasure.NewApp(server, logger)
 	if err != nil {
 		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
-	return appApp, func() {
+	return app, func() {
 		cleanup2()
 		cleanup()
 	}, nil
@@ -93,4 +93,4 @@ func CreateApp(confPath string) (*app.App, func(), error) {
 
 // wire.go:
 
-var providerSet = wire.NewSet(config.GlobalProviderSet, log.ProviderSet, db.ProviderSet, model.ProviderSet, services.ProviderSet, controllers.ProviderSet, http.ProviderSet, app.ProviderSet)
+var providerSet = wire.NewSet(config.ProviderSet, log.ProviderSet, database.ProviderSet, repositories.ProviderSet, erasure.ProviderSet, controllers.ProviderSet, http.ProviderSet, derasure.ProviderSet)

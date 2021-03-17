@@ -1,17 +1,17 @@
-package services
+package erasure
 
 import (
 	"context"
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app/model"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
 )
 
 var EliminateSet = wire.NewSet(wire.Struct(new(Eliminate), "*"))
 
-var _ IDel = (*Eliminate)(nil)
+var _ IDelData = (*Eliminate)(nil)
 
 type Eliminate struct {
-	Repostiory *model.Repostiory
+	Repostiory *repositories.Repostiory
 }
 
 func (b *Eliminate) Execution(ctx context.Context, uid string) (err error) {

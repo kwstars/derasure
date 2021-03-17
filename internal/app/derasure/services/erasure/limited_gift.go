@@ -1,17 +1,17 @@
-package services
+package erasure
 
 import (
 	"context"
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app/model"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
 )
 
 var LimitedGiftSet = wire.NewSet(wire.Struct(new(LimitedGift), "*"))
 
-var _ IDel = (*LimitedGift)(nil)
+var _ IDelData = (*LimitedGift)(nil)
 
 type LimitedGift struct {
-	Repostiory *model.Repostiory
+	Repostiory *repositories.Repostiory
 }
 
 func (b *LimitedGift) Execution(ctx context.Context, uid string) (err error) {

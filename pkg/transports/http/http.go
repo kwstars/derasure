@@ -37,7 +37,7 @@ func NewRouter(initRouter InitControllers, lg *zap.Logger) *gin.Engine {
 	r.Use(gin.Recovery())
 
 	// 日志
-	r.Use(ginzap.Ginzap(lg, time.RFC3339, true))
+	r.Use(ginzap.Ginzap(lg, time.RFC3339, false))
 	r.Use(ginzap.RecoveryWithZap(lg, true))
 
 	// 初始化路由

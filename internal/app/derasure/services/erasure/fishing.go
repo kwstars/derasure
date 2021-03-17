@@ -1,17 +1,17 @@
-package services
+package erasure
 
 import (
 	"context"
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app/model"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
 )
 
 var FishingSet = wire.NewSet(wire.Struct(new(Fishing), "*"))
 
-var _ IDel = (*Fishing)(nil)
+var _ IDelData = (*Fishing)(nil)
 
 type Fishing struct {
-	Repostiory *model.Repostiory
+	Repostiory *repositories.Repostiory
 }
 
 func (b *Fishing) Execution(ctx context.Context, uid string) (err error) {

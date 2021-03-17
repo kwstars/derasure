@@ -4,27 +4,27 @@ package main
 
 import (
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app"
-	"github.com/kwstars/derasure/internal/app/controllers"
-	"github.com/kwstars/derasure/internal/app/model"
-	"github.com/kwstars/derasure/internal/app/services"
-	globalconfig "github.com/kwstars/derasure/pkg/config"
-	"github.com/kwstars/derasure/pkg/db"
+	"github.com/kwstars/derasure/internal/app/derasure"
+	"github.com/kwstars/derasure/internal/app/derasure/controllers"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
+	"github.com/kwstars/derasure/internal/app/derasure/services/erasure"
+	"github.com/kwstars/derasure/pkg/config"
+	"github.com/kwstars/derasure/pkg/database"
 	"github.com/kwstars/derasure/pkg/log"
 	"github.com/kwstars/derasure/pkg/transports/http"
 )
 
 var providerSet = wire.NewSet(
-	globalconfig.GlobalProviderSet,
+	config.ProviderSet,
 	log.ProviderSet,
-	db.ProviderSet,
-	model.ProviderSet,
-	services.ProviderSet,
+	database.ProviderSet,
+	repositories.ProviderSet,
+	erasure.ProviderSet,
 	controllers.ProviderSet,
 	http.ProviderSet,
-	app.ProviderSet,
+	derasure.ProviderSet,
 )
 
-func CreateApp(confPath string) (*app.App, func(), error) {
+func CreateApp(confPath string) (*derasure.App, func(), error) {
 	panic(wire.Build(providerSet))
 }

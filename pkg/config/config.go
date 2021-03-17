@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-var GlobalProviderSet = wire.NewSet(New)
+var ProviderSet = wire.NewSet(New)
 
 func init() {
 	viper.AutomaticEnv() // 绑定环境变量

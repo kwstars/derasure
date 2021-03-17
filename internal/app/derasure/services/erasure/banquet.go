@@ -1,17 +1,17 @@
-package services
+package erasure
 
 import (
 	"context"
 	"github.com/google/wire"
-	"github.com/kwstars/derasure/internal/app/model"
+	"github.com/kwstars/derasure/internal/app/derasure/repositories"
 )
 
 var BanquetSet = wire.NewSet(wire.Struct(new(Banquet), "*"))
 
-var _ IDel = (*Banquet)(nil)
+var _ IDelData = (*Banquet)(nil)
 
 type Banquet struct {
-	Repostiory *model.Repostiory
+	Repostiory *repositories.Repostiory
 }
 
 func (b *Banquet) Execution(ctx context.Context, uid string) (err error) {

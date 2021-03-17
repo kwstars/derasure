@@ -1,4 +1,4 @@
-package model
+package repositories
 
 import (
 	"context"
@@ -14,26 +14,8 @@ type Repostiory struct {
 }
 
 func (db *Repostiory) DelKey(ctx context.Context, key string) (err error) {
-	if err := db.CheckAccountExist(ctx, key); err != nil {
-		return errors.Wrap(err, key)
-	}
-
 	if _, err = db.Redis.Del(ctx, key).Result(); err != nil {
 		return errors.WithStack(err)
 	}
-	return
-}
-
-func (db *Repostiory) CheckAccountExist(ctx context.Context, uid string) (err error) {
-	key := "user:" + uid
-	exist, err := db.Redis.Exists(ctx, key).Result()
-	if err != nil {
-		return err
-	}
-
-	if exist == 0 {
-		return errors.New("key不存在")
-	}
-
 	return
 }

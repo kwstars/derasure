@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"context"
@@ -47,7 +47,6 @@ func New(o *RedisOptions) (db *redis.Client, cf func(), err error) {
 			if _, err := cn.Ping(ctx).Result(); err != nil {
 				return err
 			}
-
 			return nil
 		},
 	})
