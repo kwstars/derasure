@@ -33,7 +33,7 @@ services:
     depends_on:
       - mysql
       - redis
-    command: "go test ./..."
+    command: "go test ./... -v"
     environment:
       REDIS_ADDR: "redis:6379"
       REDIS_DB: 1
