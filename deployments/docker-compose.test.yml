@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "--protocol=tcp"]
+      timeout: 20s
+      interval: 1s
+      retries: 20
+    command: [
+      '--character-set-server=utf8',
+      '--collation-server=utf8_unicode_ci'
+    ]
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  testing:
+    image: golang:1.15
+    working_dir: /opt/myapp/
+    volumes:
+      - ./:/opt/myapp/
+    depends_on:
+      - mysql
+      - redis
+    command: "go test ./..."
+    environment:
+      REDIS_ADDR: "redis:6379"
+      REDIS_DB: 1
+      REDIS_PASS: ""
+
+networks:
+  default:
+    name: mynetwork
+    driver: bridge
