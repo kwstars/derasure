@@ -20,3 +20,6 @@ build-in-docker:
 
 build-docker-images: wire generate
 	 docker build -f build/Dockerfile -t kwstars/derasure .
+
+test:
+	docker-compose -f deployments/docker-compose.test.yml up --exit-code-from testing

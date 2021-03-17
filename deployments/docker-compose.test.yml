@@ -35,11 +35,15 @@ services:
     image: golang:1.15
     working_dir: /opt/myapp/
     volumes:
-      - ./:/opt/myapp/
+      - $PWD:/opt/myapp/
     depends_on:
       - mysql
       - redis
-    command: "go test ./... -v"
+    command: >
+      bash -c "
+      go env -w GOPROXY=https://goproxy.cn,direct
+      && go test ./... -v
+      "
     environment:
       REDIS_ADDR: "redis:6379"
       REDIS_DB: 1
