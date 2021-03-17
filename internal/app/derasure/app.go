@@ -26,7 +26,7 @@ func NewApp(h *http.Server, logger *zap.Logger) (app *App, err error) {
 		logger:     logger,
 		close: func() {
 			if err := h.Stop(); err != nil {
-				log.Println("httpSrv.Shutdown error(%v)", err)
+				log.Printf("httpSrv.Shutdown error(%v)", err)
 			}
 		},
 	}
