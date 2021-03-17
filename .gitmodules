@@ -1,3 +1,4 @@
 [submodule "public/layui"]
 	path = public/layui
 	url = https://github.com/sentsin/layui
+	branch = master
