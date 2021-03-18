@@ -15,7 +15,7 @@ type Eliminate struct {
 }
 
 func (b *Eliminate) Execution(ctx context.Context, uid string) (err error) {
-	if err := b.Repostiory.DelKey(ctx, "banquet:"+uid); err != nil {
+	if err := b.Repostiory.DelKey(ctx, "eliminate:"+uid); err != nil {
 		return err
 	}
 	return
