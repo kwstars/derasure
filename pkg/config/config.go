@@ -15,10 +15,8 @@ func init() {
 func New(confPath string) (v *viper.Viper, err error) {
 	v = viper.New()
 	v.AddConfigPath(".")
-	v.AddConfigPath("./configs/derasure/")
-	v.AddConfigPath("../../../../configs/derasure") //测试用
-	v.SetConfigFile(confPath)
 	v.SetConfigName("config")
+	v.SetConfigFile(confPath) //要在最后设置,否则不生效
 
 	if err = v.ReadInConfig(); err != nil {
 		return nil, err

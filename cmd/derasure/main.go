@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-var configFile = flag.String("f", "", "set config file which viper will loading.")
+var configFile = flag.String("f", "./configs/derasure/config.yaml", "set config file which viper will loading.")
 
 func init() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)

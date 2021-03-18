@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var configFile = flag.String("f", "", "set config file which viper will loading.")
+var configFile = flag.String("f", "../../../../configs/derasure/config.yaml", "set config file which viper will loading.")
 
 func TestErasureRepostiory_DelKey(t *testing.T) {
 	flag.Parse()
