@@ -37,4 +37,4 @@ COPY ./templates ./templates
 
 EXPOSE 8080
 
-CMD ["/opt/myapp/app"]
+CMD ["/opt/myapp/app -f config.yaml"]
